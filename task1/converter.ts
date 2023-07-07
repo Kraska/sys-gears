@@ -1,4 +1,4 @@
-type Input = {
+export type Input = {
   distance: {
     unit: string;
     value: number;
@@ -6,12 +6,12 @@ type Input = {
   convertTo: string;
 };
 
-type Output = {
+export type Output = {
   unit: string;
   value: number;
 };
 
-type Rule = {
+export type Rule = {
   unit: string;
   abbreviation: string[];
   siEquivalent: {
@@ -20,12 +20,12 @@ type Rule = {
   };
 };
 
-type Rules = {
+export type Rules = {
   [abbreviation: string]: number;
 };
 
-const convert = (json: Input, rulesList: Rule[]): Output => {
-  const rules: Rules = rulesList.reduce(
+export const normalizeRules = (rules: Rule[]): Rules => {
+  return rules.reduce(
     (accum, { abbreviation, siEquivalent }) => {
       abbreviation.forEach((name) => {
         const { value, unit } = siEquivalent;
@@ -35,7 +35,9 @@ const convert = (json: Input, rulesList: Rule[]): Output => {
     },
     { m: 1000 }
   );
+};
 
+export const convert = (json: Input, rules: Rules): Output => {
   const { distance, convertTo } = json;
   const { unit, value } = distance;
 
@@ -46,22 +48,3 @@ const convert = (json: Input, rulesList: Rule[]): Output => {
     value: Math.round(convertedValue * 100) / 100,
   };
 };
-
-const rulesList: Rule[] = [
-  {
-    unit: "inch",
-    abbreviation: ["in", "'"],
-    siEquivalent: { unit: "mm", value: 25.4 },
-  },
-  {
-    unit: "foot",
-    abbreviation: ["ft", '"'],
-    siEquivalent: { unit: "mm", value: 304.8 },
-  },
-];
-
-const json = { distance: { unit: "m", value: 0.5 }, convertTo: "ft" };
-
-const res = convert(json, rulesList);
-
-console.log(res);

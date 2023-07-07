@@ -1,11 +1,24 @@
-type Rules2 = {
+type Input = {
+  distance: {
+    unit: string;
+    value: number;
+  };
+  convertTo: string;
+};
+
+type Output = {
+  unit: string;
+  value: number;
+};
+
+type Rules = {
   [name: string]: {
     unit: string;
     value: number;
   };
 };
 
-const convertRecursively = (json: Input, rules: Rules2): Output => {
+const convertRecursively = (json: Input, rules: Rules): Output => {
   const { distance, convertTo } = json;
   const { unit, value } = distance;
 
@@ -30,7 +43,7 @@ const convertRecursively = (json: Input, rules: Rules2): Output => {
   }
 };
 
-const rules: Rules2 = {
+const rules: Rules = {
   in: { unit: "mm", value: 25.4 },
   ft: { unit: "mm", value: 304.8 },
   m: { unit: "mm", value: 1000 },
