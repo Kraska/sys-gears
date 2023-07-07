@@ -33,7 +33,7 @@ export const normalizeRules = (rules: Rule[]): Rules => {
       });
       return accum;
     },
-    { m: 1000 }
+    { m: 1000, mm: 1 }
   );
 };
 
