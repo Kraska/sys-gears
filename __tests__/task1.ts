@@ -1,4 +1,4 @@
-import { convert, normalizeRules, Rule } from "../converter";
+import { convert, normalizeRules, Rule } from "../task1/converter";
 
 const rules: Rule[] = [
   {
