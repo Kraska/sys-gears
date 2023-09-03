@@ -1,6 +1,6 @@
-import { Survey, SurveySettings } from "../task4/app2";
+import { Survey, goAroundSurvey } from "../task4/app2";
 
-const settings: SurveySettings = {
+const survey: Survey = {
   question: "What is your marital status?",
   answers: {
     Single: {
@@ -26,45 +26,9 @@ const settings: SurveySettings = {
   },
 };
 
-const doSurvey = (pathsToDo: string[][], survey: Survey) => {
-  const path = pathsToDo.pop() || [];
-
-  // go through the path
-  let next;
-  path.forEach((answer) => {
-    next = survey.getNext();
-    survey.doAnswer(answer);
-  });
-
-  next = survey.getNext();
-  while (next) {
-    const answer = next.answers.pop();
-    survey.doAnswer(answer);
-
-    next.answers
-      .map((answer) => [...path, answer])
-      .forEach((path) => pathsToDo.push(path));
-
-    path.push(answer);
-    next = survey.getNext();
-  }
-
-  // console.log("pathsToDo", pathsToDo);
-  return survey.getResult();
-};
-
 describe("Task4. ", () => {
   test("Case1", () => {
-    const results = [];
-    const pathsToDo = [];
-
-    do {
-      const survey = new Survey(settings);
-      const res = doSurvey(pathsToDo, survey);
-      res && results.push(res);
-      // console.log("res", res);
-    } while (pathsToDo.length);
-
+    const results = goAroundSurvey(survey);
     console.log("results", results);
   });
 });
