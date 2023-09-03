@@ -1,93 +1,76 @@
-import { Survey, SurveySettings } from "../task4/app";
-
-// const QuestionIds = [1,2,3,4] as const;
-type QuestionId = 1 | 2 | 3 | 4;
-
-const settings: SurveySettings<QuestionId> = {
-  1: {
-    question: "What is your marital status?",
-    answers: {
-      1: "Single",
-      2: "Married",
-    },
-    nextQuestionsMap: {
-      1: 2,
-      2: 3,
-    },
-  },
-  2: {
-    question: "Are you planning on getting married next year?",
-    answers: {
-      1: "Yes",
-      2: "No",
-    },
-    nextQuestionsMap: {
-      1: null,
-      2: null,
-    },
-  },
-  3: {
-    question: "How long have you been married?",
-    answers: {
-      1: "Less than a year",
-      2: "More than a year",
-    },
-    nextQuestionsMap: {
-      1: null,
-      2: 4,
-    },
-  },
-  4: {
-    question: "Have you celebrated your one year anniversary?",
-    answers: {
-      1: "Yes",
-      2: "No",
-    },
-    nextQuestionsMap: {
-      1: null,
-      2: null,
-    },
-  },
-};
+import {
+  Survey,
+  goAroundSurvey,
+  SurveyInstanceResult,
+  SurveyPathVariants,
+} from "../task4/app";
 
 describe("Task4. ", () => {
-  test("Case1", () => {
-    //testCase(settings);
+  test("Survey about marital status", () => {
+    const survey: Survey = {
+      question: "What is your marital status?",
+      answers: {
+        Single: {
+          question: "Are you planning on getting married next year?",
+          answers: {
+            Yes: null,
+            No: null,
+          },
+        },
+        Married: {
+          question: "How long have you been married?",
+          answers: {
+            "Less than a year": null,
+            "More than a year": {
+              question: "Have you celebrated your one year anniversary?",
+              answers: {
+                Yes: null,
+                No: null,
+              },
+            },
+          },
+        },
+      },
+    };
 
-    const survey = new Survey(settings);
-    let question;
-    do {
-      let question = survey.getNext();
-      console.log(question.question, question.answers);
+    const res = goAroundSurvey(survey);
+    console.dir(res, { depth: null });
 
-      Object.keys(question.answers)
-        .map((answerId) => parseInt(answerId))
-        .forEach((answerId) => surveyContinue(survey, answerId));
-    } while (question);
+    const expectedList = [
+      {
+        "What is your marital status?": "Married",
+        "How long have you been married?": "More than a year",
+        "Have you celebrated your one year anniversary?": "No",
+      },
+      {
+        "What is your marital status?": "Married",
+        "How long have you been married?": "More than a year",
+        "Have you celebrated your one year anniversary?": "Yes",
+      },
+      {
+        "What is your marital status?": "Married",
+        "How long have you been married?": "Less than a year",
+      },
+      {
+        "What is your marital status?": "Single",
+        "Are you planning on getting married next year?": "No",
+      },
+      {
+        "What is your marital status?": "Single",
+        "Are you planning on getting married next year?": "Yes",
+      },
+    ];
 
-    const result = survey.getResult();
-    console.log("result = ", result);
+    checkResult(res, expectedList);
   });
 });
 
-const surveyContinue = <QID extends number>(
-  survey: Survey<QID>,
-  answerId: number
+const checkResult = (
+  res: SurveyPathVariants,
+  expectedPaths: SurveyInstanceResult[]
 ) => {
-  survey.doAnswer(answerId);
-  let question = survey.getNext();
-};
-
-const testCase = <QID extends number>(settings: SurveySettings<QID>) => {
-  const survey = new Survey(settings);
-
-  let question;
-  do {
-    let question = survey.getNext();
-    console.log(question.question, question.answers);
-    survey.doAnswer(2);
-  } while (question);
-
-  const result = survey.getResult();
-  console.log("result = ", result);
+  const expectedNumber = expectedPaths.length;
+  expect(res.paths.list).toEqual(expect.arrayContaining(expectedPaths));
+  expect(res.paths.list.length).toBe(expectedNumber);
+  expect(res.paths.number).toBe(expectedNumber);
 };
