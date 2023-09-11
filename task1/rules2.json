@@ -1,0 +1,8 @@
+{
+    "in": { "unit": "mm", "value": 25.4 },
+    "ft": { "unit": "mm", "value": 304.8 },
+    "km": { "unit":"m", "value": 1000 },
+    "yd": { "unit":"m", "value": 1000 },
+    "m": { "unit": "mm", "value": 1000 }
+}
+

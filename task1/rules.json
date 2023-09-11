@@ -1,0 +1,22 @@
+[
+    {
+      "unit": "inch",
+      "abbreviation": ["in", "'"],
+      "siEquivalent": { "unit": "mm", "value": 25.4 }
+    },
+    {
+      "unit": "foot",
+      "abbreviation": ["ft", "\""],
+      "siEquivalent": { "unit": "mm", "value": 304.8 }
+    },
+    {
+      "unit": "km",
+      "abbreviation": ["km"],
+      "siEquivalent": { "unit": "m", "value": 1000 }
+    },
+    {
+      "unit": "yard",
+      "abbreviation": ["yd"],
+      "siEquivalent": { "unit": "m", "value": 0.9144 }
+    }
+]
