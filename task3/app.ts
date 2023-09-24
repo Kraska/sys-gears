@@ -4,6 +4,11 @@ export type Coordinates = {
   z: number;
 };
 
+const toString = (coordinates: Coordinates): string => {
+  const { x, y, z } = coordinates;
+  return `(${x}, ${y}, ${z})`;
+};
+
 export const generateCoordinates = (
   maxX: number = 100,
   maxY: number = 100,
@@ -17,7 +22,7 @@ export const generateCoordinates = (
 };
 
 const generateNum = (max: number) => {
-  return Math.random() * max;
+  return Math.round(Math.random() * max);
 };
 
 /**
@@ -57,9 +62,23 @@ export const calculateAsteroidCoordinates = (
 };
 
 const run = () => {
-  const coordinates = generateCoordinates();
+  const asteroidCoordinates: Coordinates = generateCoordinates();
+  {
+    console.log(
+      `Random asteroid coordinates: ${toString(asteroidCoordinates)}`
+    );
+  }
+  const r1 = calculateR1(asteroidCoordinates);
+  console.log(`Distance from zond1 (0, 0, 0) to asteroid: ${r1}`);
 
-  const r1 = calculateR1(coordinates);
-  const r2 = calculateR2(coordinates);
-  const r3 = calculateR3(coordinates);
+  const r2 = calculateR2(asteroidCoordinates);
+  console.log(`Distance from zond2 (0, 100, 0) to asteroid: ${r2}`);
+
+  const r3 = calculateR3(asteroidCoordinates);
+  console.log(`Distance from zond3 (100, 0, 0) to asteroid: ${r3}`);
+
+  const coordinates = calculateAsteroidCoordinates(r1, r2, r3);
+  console.log(`Calculated coordinates: ${toString(coordinates)}`);
 };
+
+run();
