@@ -4,6 +4,16 @@ export type Coordinates = {
   z: number;
 };
 
+export type Result = {
+  result: {
+    lcation: Coordinates;
+    probes: {
+      count: number;
+      coordinates: Coordinates[];
+    };
+  };
+};
+
 const toString = (coordinates: Coordinates): string => {
   const { x, y, z } = coordinates;
   return `(${x}, ${y}, ${z})`;
@@ -78,7 +88,23 @@ const run = () => {
   console.log(`Distance from zond3 (100, 0, 0) to asteroid: ${r3}`);
 
   const coordinates = calculateAsteroidCoordinates(r1, r2, r3);
-  console.log(`Calculated coordinates: ${toString(coordinates)}`);
+  // console.log(`Calculated coordinates: ${toString(coordinates)}`);
+
+  const result: Result = {
+    result: {
+      lcation: coordinates,
+      probes: {
+        count: 3,
+        coordinates: [
+          { x: 0, y: 0, z: 0 },
+          { x: 0, y: 100, z: 0 },
+          { x: 100, y: 0, z: 0 },
+        ],
+      },
+    },
+  };
+
+  console.log("Result: ", JSON.stringify(result));
 };
 
 run();
