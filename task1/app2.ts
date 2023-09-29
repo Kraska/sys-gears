@@ -1,5 +1,5 @@
 import { convert, Rules } from "./converter2";
-import { getInput } from "./helpers";
+import { getInput } from "./helper";
 
 const rules: Rules = require("./rules2.json");
 

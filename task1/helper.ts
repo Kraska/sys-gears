@@ -1,22 +1,5 @@
+import { ProcessArgv } from "../helpers";
 import { Input } from "./types";
-import { toJson } from "really-relaxed-json";
-
-export const getInput = () => {
-  const argv2Example = "{ distance: { unit: m, value: 0.5 }, convertTo: ft }";
-
-  if (!process.argv[2]) {
-    throw Error(
-      `You need specify second argument! For example '${argv2Example}'`
-    );
-  }
-  const json: Input = JSON.parse(toJson(process.argv[2]));
-
-  if (!isInput(json)) {
-    throw Error(`Wrong format of second argument. Example: ${argv2Example}`);
-  }
-
-  return json;
-};
 
 /**
  * Check if really json type is Input
@@ -34,4 +17,14 @@ export const isInput = (json: any): json is Input => {
     input.convertTo != undefined &&
     typeof input.convertTo === "string"
   );
+};
+
+export const getInput = (): Input => {
+  const inputExample = "{ distance: { unit: m, value: 0.5 }, convertTo: ft }";
+  const input = new ProcessArgv(2, "input", inputExample).getJson();
+
+  if (!isInput(input)) {
+    throw Error(`Wrong format of input. Example: ${inputExample}`);
+  }
+  return input;
 };

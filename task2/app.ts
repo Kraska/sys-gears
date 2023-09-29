@@ -1,4 +1,4 @@
-import { getInput } from "./helpers";
+import { ProcessArgv } from "../helpers";
 import { ExcludeModifier } from "./modifiers/ExcludeModifier";
 import { IncludeModifier } from "./modifiers/IncludeModifier";
 import { SortModifier } from "./modifiers/SortModifier";
@@ -21,8 +21,38 @@ export const modify = (input: Input): Output => {
   return { result };
 };
 
+/**
+ * Check if really json type is Input. If isn't then throw Error.
+ * @param json
+ */
+const checkInput = (json: any) => {
+  const input = json as Input;
+
+  if (input.data == undefined) {
+    throw Error('Input json should contain field "data"');
+  }
+  if (input.condition == undefined) {
+    throw Error('Input json should contain field "condition"');
+  }
+  if (input.data.length == undefined) {
+    throw Error('Wrong format of input json. Field "data" should be an array.');
+  }
+  if (typeof input.condition != "object") {
+    throw Error(
+      'Wrong format of input json. Field "condition" should be an object.'
+    );
+  }
+};
+
 try {
-  console.log(modify(getInput()));
+  const processArgv = new ProcessArgv(
+    2,
+    "path to input.json",
+    "./task2/input.json"
+  );
+  const json = processArgv.getJsonFromFile();
+  checkInput(json);
+  console.log(modify(json as Input));
 } catch (e) {
   console.error((e as Error).message);
 }

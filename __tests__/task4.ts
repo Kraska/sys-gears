@@ -1,9 +1,9 @@
 import {
   Survey,
   goAroundSurvey,
-  SurveyInstanceResult,
+  SurveySessionResult,
   SurveyPathVariants,
-} from "../task4/app";
+} from "../task4/Survey";
 
 describe("Task4. ", () => {
   test("Survey about marital status", () => {
@@ -67,7 +67,7 @@ describe("Task4. ", () => {
 
 const checkResult = (
   res: SurveyPathVariants,
-  expectedPaths: SurveyInstanceResult[]
+  expectedPaths: SurveySessionResult[]
 ) => {
   const expectedNumber = expectedPaths.length;
   expect(res.paths.list).toEqual(expect.arrayContaining(expectedPaths));
