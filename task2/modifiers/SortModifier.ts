@@ -1,10 +1,14 @@
 import { Modifier } from "./Modifier";
-import { Data, Condition } from "../types";
+import { Data } from "../types";
+
+export type SortByCondition = {
+  sortBy?: string[];
+};
 
 export class SortModifier implements Modifier {
   sortBy: string[] | null;
 
-  constructor(condition: Condition) {
+  constructor(condition: SortByCondition) {
     this.sortBy = condition.sortBy;
   }
 

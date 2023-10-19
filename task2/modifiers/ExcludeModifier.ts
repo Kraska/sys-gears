@@ -1,10 +1,14 @@
 import { FilterModifier } from "./FilterModifier";
-import { Data, Condition } from "../types";
+import { Data } from "../types";
+
+export type ExcludeCondition = {
+  exclude?: {}[];
+};
 
 export class ExcludeModifier extends FilterModifier {
   exclude: {}[] | null;
 
-  constructor(condition: Condition) {
+  constructor(condition: ExcludeCondition) {
     super();
     this.exclude = condition.exclude;
   }

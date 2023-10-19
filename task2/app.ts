@@ -1,8 +1,15 @@
 import { ProcessArgv } from "../helpers";
-import { ExcludeModifier } from "./modifiers/ExcludeModifier";
-import { IncludeModifier } from "./modifiers/IncludeModifier";
-import { SortModifier } from "./modifiers/SortModifier";
-import { Data, Input, Output } from "./types";
+import { ExcludeCondition, ExcludeModifier } from "./modifiers/ExcludeModifier";
+import { IncludeCondition, IncludeModifier } from "./modifiers/IncludeModifier";
+import { SortByCondition, SortModifier } from "./modifiers/SortModifier";
+import { Data, Output } from "./types";
+
+export type Condition = IncludeCondition & ExcludeCondition & SortByCondition;
+
+export type Input = {
+  data: Data;
+  condition: Condition;
+};
 
 export const modify = (input: Input): Output => {
   const { data, condition } = input;

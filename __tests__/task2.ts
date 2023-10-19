@@ -1,5 +1,4 @@
-import { modify } from "../task2/app";
-import { Input } from "../task2/types";
+import { modify, Input } from "../task2/app";
 
 describe("Task2. Filter & Sort", () => {
   test("Filter by include, sort by email", () => {

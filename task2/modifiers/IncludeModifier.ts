@@ -1,10 +1,14 @@
 import { FilterModifier } from "./FilterModifier";
-import { Data, Condition } from "../types";
+import { Data } from "../types";
+
+export type IncludeCondition = {
+  include?: {}[];
+};
 
 export class IncludeModifier extends FilterModifier {
   include: {}[] | null;
 
-  constructor(condition: Condition) {
+  constructor(condition: IncludeCondition) {
     super();
     this.include = condition.include;
   }
