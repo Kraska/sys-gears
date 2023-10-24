@@ -1,6 +1,6 @@
 import { toJson } from "really-relaxed-json";
 
-export class ProcessArgv {
+export class ProcessArgv<INPUT> {
   private n: number;
   private title: string;
   private example: string;
@@ -20,7 +20,7 @@ export class ProcessArgv {
     return process.argv[this.n];
   }
 
-  getJson(): Object {
+  getJson(): INPUT {
     return JSON.parse(toJson(this.getArgv()));
   }
 
@@ -29,7 +29,7 @@ export class ProcessArgv {
     return fs.readFileSync(this.getArgv());
   }
 
-  getJsonFromFile(): Object {
+  getJsonFromFile(): INPUT {
     return JSON.parse(this.getFileContent());
   }
 }

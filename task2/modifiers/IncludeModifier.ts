@@ -1,25 +1,25 @@
 import { FilterModifier } from "./FilterModifier";
 import { Data } from "../types";
 
-export type IncludeCondition = {
-  include?: {}[];
+export type IncludeCondition<ITEM> = {
+  include?: Partial<ITEM>[];
 };
 
-export class IncludeModifier extends FilterModifier {
-  include: {}[] | null;
+export class IncludeModifier<ITEM> extends FilterModifier<ITEM> {
+  include: Partial<ITEM>[] | null;
 
-  constructor(condition: IncludeCondition) {
+  constructor(condition: IncludeCondition<ITEM>) {
     super();
     this.include = condition.include;
   }
 
-  modify(data: Data): Data {
+  modify(data: Data<ITEM>): Data<ITEM> {
     return this.include
       ? data.filter((obj) => this.isIncluded(obj, this.include))
       : data;
   }
 
-  private isIncluded(obj: {}, include: {}[]): boolean {
+  private isIncluded(obj: ITEM, include: Partial<ITEM>[]): boolean {
     return !!include.find((sdubObj) => this.partialContains(obj, sdubObj));
   }
 }

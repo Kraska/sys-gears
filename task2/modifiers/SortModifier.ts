@@ -1,18 +1,28 @@
 import { Modifier } from "./Modifier";
 import { Data } from "../types";
+import { Comporator } from "../comporators/Comporator";
+import { ascComporator } from "../comporators/ASCComporator";
 
 export type SortByCondition = {
   sortBy?: string[];
 };
 
-export class SortModifier implements Modifier {
+export class SortModifier<ITEM> implements Modifier<ITEM> {
   sortBy: string[] | null;
+  comporator: Comporator;
 
-  constructor(condition: SortByCondition) {
+  constructor({
+    condition,
+    comporator = ascComporator,
+  }: {
+    condition: SortByCondition;
+    comporator?: Comporator;
+  }) {
     this.sortBy = condition.sortBy;
+    this.comporator = comporator;
   }
 
-  modify(data: Data): Data {
+  modify(data: Data<ITEM>): Data<ITEM> {
     if (!this.sortBy) {
       return data.sort((item1, item2) =>
         JSON.stringify(item1).localeCompare(JSON.stringify(item2))
@@ -22,22 +32,9 @@ export class SortModifier implements Modifier {
     let res = data;
     for (const field of this.sortBy) {
       res = res.sort((item1, item2) =>
-        this.compare(item1[field], item2[field])
+        this.comporator.compare(item1[field], item2[field])
       );
     }
     return res;
-  }
-
-  private compare(value1: any, value2: any): number {
-    // todo cases when types of value1 and value2 is differnt
-    if (typeof value1 == "number") {
-      return value1 - value2;
-    } else if (typeof value1 == "string") {
-      return value1.localeCompare(value2);
-    } else if (value1 instanceof Object) {
-      return JSON.stringify(value1).localeCompare(JSON.stringify(value2));
-    } else {
-      throw Error(`Unexpected type for value "${value1}"`);
-    }
   }
 }

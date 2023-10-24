@@ -1,5 +1,5 @@
-export type Data = {}[];
+export type Data<ITEM> = ITEM[];
 
-export type Output = {
-  result: Data;
+export type Output<ITEM> = {
+  result: Data<ITEM>;
 };

@@ -1,5 +1,5 @@
 import { Data } from "../types";
 
-export interface Modifier {
-  modify(data: Data): Data;
+export interface Modifier<ITEM> {
+  modify(data: Data<ITEM>): Data<ITEM>;
 }

@@ -4,23 +4,25 @@ import { IncludeCondition, IncludeModifier } from "./modifiers/IncludeModifier";
 import { SortByCondition, SortModifier } from "./modifiers/SortModifier";
 import { Data, Output } from "./types";
 
-export type Condition = IncludeCondition & ExcludeCondition & SortByCondition;
+export type Condition<ITEM> = IncludeCondition<ITEM> &
+  ExcludeCondition<ITEM> &
+  SortByCondition;
 
-export type Input = {
-  data: Data;
-  condition: Condition;
+export type Input<ITEM> = {
+  data: Data<ITEM>;
+  condition: Condition<ITEM>;
 };
 
-export const modify = (input: Input): Output => {
+export const modify = <ITEM>(input: Input<ITEM>): Output<ITEM> => {
   const { data, condition } = input;
 
   const modifiers = [
-    new IncludeModifier(condition),
-    new ExcludeModifier(condition),
-    new SortModifier(condition),
+    new IncludeModifier<ITEM>(condition),
+    new ExcludeModifier<ITEM>(condition),
+    new SortModifier<ITEM>({ condition }),
   ];
 
-  const result: Data = modifiers.reduce(
+  const result: Data<ITEM> = modifiers.reduce(
     (res, modifier) => modifier.modify(res),
     data
   );
@@ -32,8 +34,8 @@ export const modify = (input: Input): Output => {
  * Check if really json type is Input. If isn't then throw Error.
  * @param json
  */
-const checkInput = (json: any) => {
-  const input = json as Input;
+const checkInput = <INPUT>(json: {}) => {
+  const input = json as Input<INPUT>;
 
   if (input.data == undefined) {
     throw Error('Input json should contain field "data"');
@@ -51,15 +53,21 @@ const checkInput = (json: any) => {
   }
 };
 
+type User = {
+  user: string;
+  rating: number;
+  disabled: boolean;
+};
+
 try {
-  const processArgv = new ProcessArgv(
+  const processArgv = new ProcessArgv<Input<User>>(
     2,
     "path to input.json",
     "./task2/input.json"
   );
-  const json = processArgv.getJsonFromFile();
+  const json: Input<User> = processArgv.getJsonFromFile();
   checkInput(json);
-  console.log(modify(json as Input));
+  console.log(modify(json as Input<User>));
 } catch (e) {
   console.error((e as Error).message);
 }
