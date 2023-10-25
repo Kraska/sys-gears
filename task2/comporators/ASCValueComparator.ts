@@ -1,6 +1,6 @@
-import { Comporator } from "./Comporator";
+import { ValueComparator } from "./ValueComparator";
 
-class ASCComporator implements Comporator {
+class ASCValueComparator implements ValueComparator {
   mapValueTypeToComporator = {
     string: this.compareString,
     number: this.compareNumber,
@@ -29,4 +29,4 @@ class ASCComporator implements Comporator {
   }
 }
 
-export const ascComporator = new ASCComporator();
+export const ascComporator = new ASCValueComparator();

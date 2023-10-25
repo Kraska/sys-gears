@@ -1,40 +1,28 @@
 import { Modifier } from "./Modifier";
 import { Data } from "../types";
-import { Comporator } from "../comporators/Comporator";
-import { ascComporator } from "../comporators/ASCComporator";
+import { Comparator } from "../comporators/Comporator";
+import { ascParallelComporator } from "../comporators/ParallelComporator";
 
-export type SortByCondition = {
-  sortBy?: string[];
+export type SortByCondition<ITEM> = {
+  sortBy?: (keyof ITEM)[];
 };
 
 export class SortModifier<ITEM> implements Modifier<ITEM> {
-  sortBy: string[] | null;
-  comporator: Comporator;
+  sortBy: (keyof ITEM)[] | undefined;
+  comporator?: Comparator<ITEM>;
 
-  constructor({
-    condition,
-    comporator = ascComporator,
-  }: {
-    condition: SortByCondition;
-    comporator?: Comporator;
-  }) {
+  constructor(
+    condition: SortByCondition<ITEM>,
+    comporator: Comparator<ITEM> = ascParallelComporator
+  ) {
     this.sortBy = condition.sortBy;
     this.comporator = comporator;
   }
 
   modify(data: Data<ITEM>): Data<ITEM> {
-    if (!this.sortBy) {
-      return data.sort((item1, item2) =>
-        JSON.stringify(item1).localeCompare(JSON.stringify(item2))
-      );
-    }
+    const getCompareFn = (item1: ITEM, item2: ITEM) =>
+      this.comporator.compare(this.sortBy, item1, item2);
 
-    let res = data;
-    for (const field of this.sortBy) {
-      res = res.sort((item1, item2) =>
-        this.comporator.compare(item1[field], item2[field])
-      );
-    }
-    return res;
+    return data.sort(getCompareFn);
   }
 }
