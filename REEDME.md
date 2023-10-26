@@ -25,10 +25,7 @@
 
 #### Як запустити:
 
-Було реалізовано 2 варіанти (з різними форматами правил конвертаціЇ):
-
-- `npx ts-node .\task1\app.ts '{distance: {unit: m, value: 0.5}, convertTo: ft}'`
-- `npx ts-node .\task1\app2.ts '{distance: {unit: m, value: 0.5}, convertTo: ft}'`
+`npx ts-node .\task1\app.ts '{distance: {unit: m, value: 0.5}, convertTo: ft}'`
 
 ## Task №2
 
