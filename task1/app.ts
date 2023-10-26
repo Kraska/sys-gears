@@ -1,11 +1,14 @@
 import { getInput } from "./helper";
-import { convert, normalizeRules, Rule } from "./converter";
+import { Convertor } from "./Convertor";
+import { RawRule } from "./rules/RawRule";
+import { RulesProvider } from "./rules/RulesProvider";
 
-const rules: Rule[] = require("./rules.json");
+const commonRules: RawRule[] = require("./data/rules.json");
+const additionalRules: RawRule[] = require("./data/addidtionalRules.json");
 
 try {
-  const normalizedRules = normalizeRules(rules);
-  const res = convert(getInput(), normalizedRules);
+  const rules = new RulesProvider().provide(commonRules, additionalRules);
+  const res = new Convertor(rules).convert(getInput());
   console.log(res);
 } catch (e) {
   console.error((e as Error).message);

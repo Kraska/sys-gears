@@ -1,0 +1,12 @@
+[
+    {
+      "unit": "km",
+      "abbreviation": ["km"],
+      "inMillimeters": 1000000 
+    },
+    {
+      "unit": "yard",
+      "abbreviation": ["yd"],
+      "inMillimeters": 914.4 
+    }
+  ]

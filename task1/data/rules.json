@@ -1,0 +1,17 @@
+[
+  {
+    "unit": "m",
+    "abbreviation": ["m"],
+    "inMillimeters": 1000 
+  },
+  {
+    "unit": "inch",
+    "abbreviation": ["in", "'"],
+    "inMillimeters": 25.4 
+  },
+  {
+    "unit": "foot",
+    "abbreviation": ["ft", "\""],
+    "inMillimeters": 304.8 
+  }
+]
