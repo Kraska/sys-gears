@@ -1,12 +1,5 @@
-import {
-  calculateAsteroidCoordinates,
-  calculateR1,
-  calculateR2,
-  calculateR3,
-} from "../task3/app";
 import { AsteroidFinder, Result } from "../task3/AsteroidFinder";
 import { Coordinates } from "../task3/Coordinates";
-import { CoordinatesProvider } from "../task3/CoordinatesProvider";
 import { distanceCalculator } from "../task3/DictanceCalculator";
 import {
   DistanceToAsteroidByCoordinatesMeasurer,
